@@ -1,12 +1,16 @@
 const guestList = "guestList"; // 사람 목록
 const exceptList = "exceptList";  // 사람 제외 목록
 const giftList = "giftList";  // 선물 목록
-const selectGuest = "selectList"; //
-const selectGift = "selectGift";
-const guestChance = "guestChance";
-const giftChance = "giftChance";
+const selectGuest = "selectGuest"; // 사용될 사람 목록
+const selectGift = "selectGift"; // 사용될 선물 목록
+const guestChance = "guestChance"; // 사용될 사람 확률
+const giftChance = "giftChance"; // 사용될 선물 확률
 
-function getRandomInt(min, max) {       
+function nvl(i) {
+    return i == undefined || i == "" ? undefined : i;
+}
+
+function getRandomInt(min, max) {
     // Create byte array and fill with 1 random number
     var byteArray = new Uint8Array(1);
     window.crypto.getRandomValues(byteArray);
@@ -21,17 +25,11 @@ function getRandomInt(min, max) {
 
 function getItem(key) {
     const json = localStorage.getItem(key);
-
-    if(json == undefined && json == "") {
-        return undefined;
-    }
-
-    return JSON.parse(json);
+    return JSON.parse(nvl(json));
 }
 
 function setItem(key, value) {
-    localStorage.setItem(key, value);
-    
+    localStorage.setItem(key, JSON.stringify(value));
     return value;
 }
 
@@ -58,10 +56,31 @@ function confirm(params) {
 
 function check() {
     document.querySelector("div.front").innerText= getItem("a")
-
-    setItem("a", getRandomInt(1, 10));
 }
 
 function check2() {
-    setItem("a", getRandomInt(1, 10));
+
+    const list = [
+        { type: 'in', group: 'none', name: "kim"},
+        { type: 'in', group: 'none', name: "lee"},
+        { type: 'out', group: 'none', name: "park"},
+        { type: 'in', group: 'kim1', name: "kim1"},
+        { type: 'in', group: 'kim1', name: "lee1"},
+        { type: 'in', group: 'kim1', name: "park1"},
+    ]
+
+    setItem("a", JSON.stringify(list));
+}
+
+function getGuestList(type, group, name) {
+    let list = getItem(guestList);
+    if(nvl(type)) {
+        list.filter(obj => obj.type == type)
+    }
+    if(nvl(group)) {
+        list.filter(obj => obj.group == group)
+    }
+    if(nvl(name)) {
+        
+    }
 }

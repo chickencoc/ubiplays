@@ -25,7 +25,7 @@ function getRandomInt(min, max) {
 
 function getItem(key) {
     const json = localStorage.getItem(key);
-    return JSON.parse(nvl(json));
+    return new Array(JSON.parse(nvl(json)));
 }
 
 function setItem(key, value) {
@@ -42,7 +42,7 @@ function confirm(params) {
     //     console.log(x)
     // }
     
-    const obj = { type: 'in', group: 'none', name: "kim"};
+    const obj = { type: 'in', group: 'none', name: "kim"}
 
     const list = [
         { type: 'in', group: 'none', name: "kim"},
@@ -52,24 +52,6 @@ function confirm(params) {
         { type: 'in', group: 'kim1', name: "lee1"},
         { type: 'in', group: 'kim1', name: "park1"},
     ]
-}
-
-function check() {
-    document.querySelector("div.front").innerText= getItem("a")
-}
-
-function check2() {
-
-    const list = [
-        { type: 'in', group: 'none', name: "kim"},
-        { type: 'in', group: 'none', name: "lee"},
-        { type: 'out', group: 'none', name: "park"},
-        { type: 'in', group: 'kim1', name: "kim1"},
-        { type: 'in', group: 'kim1', name: "lee1"},
-        { type: 'in', group: 'kim1', name: "park1"},
-    ]
-
-    setItem("a", JSON.stringify(list));
 }
 
 function getGuestList(type, group, name) {
@@ -81,6 +63,71 @@ function getGuestList(type, group, name) {
         list.filter(obj => obj.group == group)
     }
     if(nvl(name)) {
-        
+        list.filter(obj => obj.name == name)
     }
+
+    return list
 }
+
+function getGiftList(prefer, price, name) {
+    let list = getItem(giftList);
+    if(nvl(prefer)) {
+        list.filter(obj => obj.prefer >= prefer.min && obj.prefer <= prefer.max)
+    }
+    if(nvl(price)) {
+        list.filter(obj => obj.price >= price.min && obj.price <= price.max)
+    }
+    if(nvl(name)) {
+        list.filter(obj => obj.name == name)
+    }
+
+    return list
+}
+
+// ------------------
+
+
+
+// ------------------
+
+function sampleGet() {
+    document.querySelector("div.front").innerText= getItem(guestList.toString())
+}
+
+function sampleGuest() {
+
+    const list = [
+        { type: 'in', group: 'none', name: "kim"},
+        { type: 'in', group: 'none', name: "lee"},
+        { type: 'out', group: 'none', name: "park"},
+        { type: 'in', group: 'kim1', name: "kim1"},
+        { type: 'in', group: 'kim1', name: "lee1"},
+        { type: 'in', group: 'kim1', name: "park1"},
+    ]
+
+    setItem(guestList, JSON.stringify(list))
+}
+
+function sampleGift() {
+
+    const list = [
+        { prefer: '9', price: 400000, name: "gift1"},
+        { prefer: '8', price: 45000, name: "gift2"},
+        { prefer: '8', price: 30000, name: "gift3"},
+        { prefer: '7', price: 125000, name: "gift4"},
+        { prefer: '5', price: 140000, name: "gift5"},
+        { prefer: '2', price: 60000, name: "gift6"},
+        { prefer: '1', price: 550000, name: "gift7"},
+        { prefer: '0', price: 10000, name: "gift8"},
+    ]
+
+    setItem(giftList, JSON.stringify(list))
+}
+
+function sampleGuestRatio() {
+    const ratio = {t: 10000, a: 100, b: 494.06, c: 4549.50, d: 329.70, e: 2617.82, f: 121.78, g: 990.10, h: 797.03}
+}
+
+sampleGuest()
+sampleGift()
+

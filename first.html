@@ -1,25 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="kr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Centered Cube Box</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="makeList.js"></script>
+
+    <link rel="stylesheet" href="assets/styles.css">
+
+    <script src="assets/makeList.js"></script>
+    <script src="assets/anime.js"></script>
+    <script src="assets/main.js" defer></script>
 </head>
 <body>
-    <button onclick="check()">asdf</button>
-    <div id="cube">
-        <div class="face face-fnb front">Front</div>
-        <div class="face face-fnb back">Back</div>
-        <div class="face face-lnr left">Left</div>
-        <div class="face face-lnr right">Right</div>
-        <div class="face face-tnb top">
-            <div class="hole" style="background-color: black; width: 150px; height: 75px; border-radius: 50%; z-index: 9;"></div>
+    <div id="top-box">top-box</div>
+    <div id="cube-box">
+        <div id="info-box">
+            <div id="msg1"></div>
+            <div id="ball"></div>
         </div>
-        <div class="face face-tnb top">
+        <div id="cube">
+            <div class="face face-fnb front">Front</div>
+            <div class="face face-fnb back">Back</div>
+            <div class="face face-lnr left">Left</div>
+            <div class="face face-lnr right">Right</div>
+            <div class="face face-tnb top">
+                <div class="hole"></div>
+            </div>
+            <div class="face face-tnb top">
+            </div>
+            <div class="face face-tnb bottom">Bottom</div>
         </div>
-        <div class="face face-tnb bottom">Bottom</div>
+    </div>
+    <div id="bt-box">
+        <button onclick="check()">확인</button>
     </div>
 </body>
 </html>

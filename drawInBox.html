@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Centered Cube Box</title>
+    <title>Draw in the box</title>
 
     <link rel="stylesheet" href="assets/styles.css">
 
@@ -12,14 +12,16 @@
     <script src="assets/main.js" defer></script>
 </head>
 <body>
-    <div id="top-box">top-box</div>
+    <div id="top-box"></div>
     <div id="cube-box">
         <div id="info-box">
             <div id="msg1"></div>
-            <div id="ball"></div>
         </div>
         <div id="cube">
             <div class="face face-fnb front">Front</div>
+            <div class="face face-fnb mid">
+                <div id="ball"><span id="ball-txt">사람 이름</span></div>
+            </div>
             <div class="face face-fnb back">Back</div>
             <div class="face face-lnr left">Left</div>
             <div class="face face-lnr right">Right</div>
@@ -32,7 +34,8 @@
         </div>
     </div>
     <div id="bt-box">
-        <button onclick="check()">확인</button>
+        <button type="button" onclick="getResult()">확인</button>
+        <button type="button" onclick="resetGame()">리셋</button>
     </div>
 </body>
 </html>

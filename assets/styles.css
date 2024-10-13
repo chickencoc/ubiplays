@@ -35,7 +35,6 @@ body {
 }
 
 #msg1 { display: none;}
-#ball {width: 50px; height: 50px; margin: 0 auto; border-radius: 50%; transform: translateY(300px);}
 
 /* ----------- CUBE ----------- */
 #cube {
@@ -45,19 +44,17 @@ body {
     padding-top: 2.75em;
     transform-style: preserve-3d; /* Enable 3D transformations */
     transform: rotateX(-10deg) rotateY(-10deg); /* Initial rotation */
-    animation: rotate 15s infinite linear; /* Continuous rotation animation */
 }
 #cube .face {
     position: absolute;
-    background-color: rgba(255, 255, 255, 0.8); /* Light background for faces */
-    border: 1px solid #ccc; /* Light border */
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #eee; /* Light background for faces */
+    border: 1px solid #ccc; /* Light border */
     font-size: 16px; /* Font size for text */
     font-weight: bold; /* Bold text */
     color: #333; /* Text color */
-    background-color: #ccc5; /* Light gray background */
 }
 #cube :is(.face-fnb, .face-lnr) {
     width: var(--long-axis); /* Face width */
@@ -66,6 +63,7 @@ body {
 #cube .face-tnb {
     width: var(--long-axis); /* Face width */
     height: var(--long-axis); /* Face height */
+    background-color: #ccc8; /* Light gray background */
 }
 
 /* Positioning the faces */
@@ -77,19 +75,20 @@ body {
 #cube .bottom { transform: rotateX(-90deg) translateZ(var(--cube-face-transform-2)); }
 
 #cube .hole {
-    background-color: black; width: 75px; height: 65px; border-radius: 50%; z-index: 9;
+    background-color: #000; width: 75px; height: 65px; border-radius: 50%; z-index: 9;
 }
 
-/* Animation for continuous rotation */
-/* @keyframes rotate {
-    from {
-        transform: rotateX(30deg) rotateY(0deg);
-    }
-    to {
-        transform: rotateX(30deg) rotateY(360deg);
-    }
-} */
-
+#cube #ball {
+    width: 50px;
+    height: 50px;
+    margin: 0 auto;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #a8f2af;
+}
+#cube #ball-txt {display: none;}
 
 /* ----------- BOTTOM BOX ----------- */
 #bt-box {

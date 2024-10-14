@@ -41,7 +41,6 @@ const cubeAnime = anime({
     easing: 'easeOutQuart'
 })
 
-console.log(cubeAnime)
 
 function getResult() {
     if(isDone) return;

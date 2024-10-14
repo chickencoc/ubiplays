@@ -12,6 +12,39 @@
         <script src="assets/main.js" defer></script>
     </head>
 <body>
-    
+    <div id="spinDisk">
+        <div id="wheel-container">
+            <div id="wheel" class="wheel">
+                <div class="segment" style="transform: rotate(0deg);"></div>
+                <div class="segment" style="transform: rotate(60deg);"></div>
+                <!--<div class="segment" style="transform: rotate(120deg);"></div>
+                <div class="segment" style="transform: rotate(180deg);"></div>
+                <div class="segment" style="transform: rotate(240deg);"></div>
+                <div class="segment" style="transform: rotate(300deg);"></div> -->
+            </div>
+        </div>
+        
+        <div class="btn-box">
+            <button onclick="spinWheel()">다시돌리기</button>
+            <button onclick="resetWheel()">새 원판</button>
+        </div>
+        
+        <script>
+            let rotation = 0;
+        
+            function spinWheel() {
+                const wheel = document.getElementById('wheel');
+                let randomDegree = Math.floor(Math.random() * 360) + 360 * 3; // Random spin + at least 3 full rotations
+                rotation += randomDegree;
+                wheel.style.transform = `rotate(${rotation}deg)`;
+            }
+        
+            function resetWheel() {
+                const wheel = document.getElementById('wheel');
+                rotation = 0;
+                wheel.style.transform = `rotate(${rotation}deg)`;
+            }
+        </script>
+    </div>
 </body>
 </html>

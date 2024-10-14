@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스피닝 휠</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f9f9f9;
+        }
+        .wheel-container {
+            position: relative;
+            width: 500px;
+            height: 500px;
+        }
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 5px solid #444;
+            position: relative;
+            transform: rotate(0deg);
+            transition: transform 4s cubic-bezier(0.33, 1, 0.68, 1);
+            overflow: hidden;
+        }
+        .wheel:before {
+            content: "";
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 20px solid red;
+        }
+        .segment {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            background-color: transparent;
+            transform-origin: 100% 100%;
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        }
+        .segment:nth-child(1) {
+            background-color: #FFD700; /* 금색 */
+            transform: rotate(0deg);
+        }
+        .segment:nth-child(2) {
+            background-color: #FF6347; /* 토마토 */
+            transform: rotate(60deg);
+        }
+        .segment:nth-child(3) {
+            background-color: #6A5ACD; /* 슬레이트 블루 */
+            transform: rotate(120deg);
+        }
+        .segment:nth-child(4) {
+            background-color: #FF4500; /* 오렌지 레드 */
+            transform: rotate(180deg);
+        }
+        .segment:nth-child(5) {
+            background-color: #00FF00; /* 라임 */
+            transform: rotate(240deg);
+        }
+        .segment:nth-child(6) {
+            background-color: #1E90FF; /* 도저 블루 */
+            transform: rotate(300deg);
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:active {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<div class="wheel-container">
+    <div id="wheel" class="wheel">
+        <div class="segment"></div>
+        <div class="segment"></div>
+        <div class="segment"></div>
+        <div class="segment"></div>
+        <div class="segment"></div>
+        <div class="segment"></div>
+    </div>
+</div>
+
+<div class="buttons">
+    <button onclick="spinWheel()">다시돌리기</button>
+    <button onclick="resetWheel()">새 원판</button>
+</div>
+
+<script>
+    let rotation = 0;
+
+    function spinWheel() {
+        const wheel = document.getElementById('wheel');
+        let randomDegree = Math.floor(Math.random() * 360) + 360 * 3; // 랜덤 회전 각도 + 최소 3회전
+        rotation += randomDegree;
+        wheel.style.transform = `rotate(${rotation}deg)`;
+    }
+
+    function resetWheel() {
+        const wheel = document.getElementById('wheel');
+        rotation = 0;
+        wheel.style.transform = `rotate(${rotation}deg)`;
+    }
+</script>
+
+</body>
+</html>

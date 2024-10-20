@@ -1,3 +1,9 @@
+@font-face {
+    font-family: "importedFont1";
+    src: url("./PRETENDARD-LIGHT.OTF");
+    font-weight: normal;
+}
+
 :root {
     --long-axis: 250px;
     --short-axis: 156.25px;
@@ -9,11 +15,35 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    border: 1px solid red;
+    font-family: 'importedFont';
+    font-size: 16px;
+    /* border: 1px solid red; */
+}
+
+button {
+    padding: 7px 16px;
+    margin: 5px;
+    border: none;
+    background-color: #8d7560;
+    color: #fff;
+    font-size: 1.25em;
+    font-weight: 600;
+    text-shadow: 2px 2px 0 #000;
+    cursor: pointer;
+    border-radius: 7px;
+    border: 2px solid #000;
+}
+button:hover {
+    background-color: #74604f;
+}
+button:active {
+    background-color: #74604f;
+    box-shadow: inset 5px 5px 10px 0 #3e332a;
 }
 
 #drawInBox {
     height: 100vh;
+    background-color: #f3ede1;
 }
 
 /* ----------- CUBE BOX ----------- */
@@ -32,9 +62,10 @@
     width: 100%;
     height: calc(100% - var(--long-axis));
     padding-top: 50px;
+    
 }
 
-#drawInBox #msg1 { display: none;}
+#drawInBox #msg1 { display: none; }
 
 /* ----------- CUBE ----------- */
 #drawInBox #cube {
@@ -51,8 +82,8 @@
     justify-content: center;
     align-items: center;
     background-color: #eee; /* Light background for faces */
-    border: 1px solid #ccc; /* Light border */
-    font-size: 16px; /* Font size for text */
+    border: 1px solid #000; /* Light border */
+    font-size: 1.5em; /* Font size for text */
     font-weight: bold; /* Bold text */
     color: #333; /* Text color */
 }
@@ -63,10 +94,10 @@
 #drawInBox #cube .face-tnb {
     width: var(--long-axis); /* Face width */
     height: var(--long-axis); /* Face height */
-    background-color: #ccc8; /* Light gray background */
 }
 
 /* Positioning the faces */
+#drawInBox #cube .mid {border: none; width: var(--long-axis) - 1px;}
 #drawInBox #cube .front  { transform: translateZ(var(--cube-face-transform-1)); }
 #drawInBox #cube .back   { transform: rotateY(180deg) translateZ(var(--cube-face-transform-1)); }
 #drawInBox #cube .left   { transform: rotateY(-90deg) translateZ(var(--cube-face-transform-1)); }
@@ -75,7 +106,7 @@
 #drawInBox #cube .bottom { transform: rotateX(-90deg) translateZ(var(--cube-face-transform-2)); }
 
 #drawInBox #cube .hole {
-    background-color: #000; width: 75px; height: 65px; border-radius: 50%; z-index: 9;
+    background-color: #444; width: 75px; height: 65px; border-radius: 50%; z-index: 9;
 }
 
 #drawInBox #cube #ball {
@@ -86,7 +117,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #eee;
+    background-color: #6A5ACD;
 }
 #drawInBox #cube #ball-txt {display: none;}
 
@@ -181,18 +212,7 @@
     background-color: #1E90FF; /* 도저 블루 */
     transform: rotate(300deg);
 }
+
 .buttons {
     margin-top: 20px;
-}
-button {
-    padding: 10px 20px;
-    margin: 5px;
-    border: none;
-    background-color: #23ac27;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-}
-button:active {
-    background-color: #0a420e;
 }

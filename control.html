@@ -4,22 +4,256 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Control</title>
-    
+    <style>
+        @font-face {
+            font-family: "importedFont1";
+            src: url("./PRETENDARD-LIGHT.OTF");
+            font-weight: normal;
+        }
+        * {box-sizing: border-box; font-family: 'importedFont'; font-size: 16.5px;}
+        input[type=text] {width: 100px;}
+        input[type=range] {width: 5.25em; height: 5px;}
+        .box {border: 1px solid #000; width: 50%; padding: 1em; padding-bottom: 6em;}
+        .bold {font-weight: bold;}
+
+        #mid_box {display: flex;}
+        #top_box {width: 100%; display: flex; text-align: center; padding-bottom: 2em;}
+    </style>
     <script src="assets/makeList.js"></script>
 </head>
 <body>
-    <form id="listform">
-        <div class="formbox">
-            <input type="text" name="ptype" value="1" />
-            <input type="text" name="pgroup" value="1" />
-            <input type="text" name="pname" value="1" />
+    <div id="top_box" class="box">
+        <div>
+            <b>* 사람 확률 변경</b>
+            <div>내부 : <span id="in_value">50</span>%</div>
+            <div>외부 : <span id="out_value">50</span>%</div>
+            <input type="range" id="slider" min="0" max="1000" value="500" step="1">
+            <br /><br /><button type="button" onclick="resetSlider()">50 : 50</button>
         </div>
-        <div class="formbox">
-            <input type="text" name="ptype" value="2" />
-            <input type="text" name="pgroup" value="2" />
-            <input type="text" name="pname" value="2" />
+    </div>
+    <div id="mid_box">
+        <div id="left_box" class="box">
+            <input type="file" id="csvFileInput" accept=".csv" />
+            <button onclick="readCSV()">Read CSV</button>
+            <button onclick="displayStorage('guest')">GUEST</button>
+            <button onclick="displayStorage('gift')">GIFT</button>
+            <div id="type_div" class="bold"></div>
+            <pre id="output"></pre>
         </div>
-        <button type="button" onclick="check2()">click</button>
-    </form>
+        <div id="right_box" class="box">
+            <span id="count" class="bold">1</span>
+            <button type="button" onclick="makeInput(true)">++</button>
+            <button type="button" onclick="makeInput(false)">--</button>
+            <button type="button" id="save_btn" onclick="save()">save</button>
+            <a id="save_type" class="bold" href="javascript:" onclick="changeGusetAndGift()">guset</a>
+            <div id="container">
+                <div class="input_box">
+                    <input type="text" name="ptype" value="" />
+                    <input type="text" name="pgroup" value="" />
+                    <input type="text" name="pname" value="" />
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
+<script>
+    let str = ""
+    let saveType = 'guest';
+
+    const spanEl = document.getElementById("count");
+    const typeEl = document.getElementById('type_div');
+
+    const slider = document.getElementById('slider');
+    const inValue = document.getElementById('in_value');
+    const outValue = document.getElementById('out_value');
+    
+    const atag = document.getElementById('save_type');
+    const saveBtn = document.getElementById('save_btn');
+
+
+    // 페이지 로딩 시 슬라이더 기본 값
+   window.onload = () => {
+        const ratio = getItem(guestChance);
+        slider.value = ratio ? ratio[0] : 500;
+        activateSlider();
+    };
+    // 슬라이더 값이 변경될 때마다 실행
+    slider.addEventListener('input', () => activateSlider());
+
+    // 슬라이더 초기화
+    function resetSlider() {
+        slider.value = 500;
+        activateSlider();
+    }
+
+    function activateSlider() {
+        inValue.textContent = slider.value / 10;
+        outValue.textContent = (slider.max - slider.value) / 10;
+        setItem(guestChance, [slider.value, slider.max - slider.value])
+    }
+
+    function readCSV() {
+        const input = document.getElementById('csvFileInput');
+        const file = input.files[0];
+        
+        if (!file) {
+            alert("Please select a CSV file.");
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const text = event.target.result;
+            parseCSV(text);
+        };
+
+        reader.readAsText(file);
+        input.value = '';
+        typeEl.innerText = 'csv'
+
+        // saveType
+        atag.style.display = 'inline';
+        saveBtn.innerText = 'save';
+        saveType = 'guest';
+        atag.innerText = saveType;
+    }
+
+    function parseCSV(text) {
+        const rows = text.split('\r\n').filter(val => val != '');
+        const result = rows.map(row => {
+            const list = row.split('	');
+            return {
+                type: list[0],
+                group: list[1],
+                name: list[2]
+            };
+        }).sort((a, b) => {
+            if (a.type < b.type) return -1;
+            if (a.type > b.type) return 1;
+            // type이 같을 경우 group 비교
+            if (a.group < b.group) return -1;
+            if (a.group > b.group) return 1;
+            // type과 group이 같을 경우 name 비교
+            if (a.name < b.name) return -1;
+            if (a.name > b.name) return 1;
+            return 0; // 모두 같으면 0을 반환
+        });
+
+        // Displaying the CSV data in a readable format
+        displayList(result);
+        spanEl.innerText = result.length;
+        createInputBoxes(result);
+    }
+
+    function displayList(value) {
+        const output = document.getElementById('output');
+        output.textContent = JSON.stringify(value).replaceAll('},', '},\n');
+    }
+
+    // localStorage의 사람, 선물 목록 표시
+    function displayStorage(key) {
+        typeEl.innerText = key + 'List';
+        const list = getItem(typeEl.innerText);
+        displayList(list);
+        spanEl.innerText = list.length;
+        createInputBoxes(list);
+
+        // saveType
+        atag.style.display = 'none';
+        saveBtn.innerText = key + ' save';
+        saveType = key;
+    }
+
+    function collectInputBoxes() {
+        const inputBoxes = document.querySelectorAll('.input_box');
+        const result = [];
+
+        inputBoxes.forEach(box => {
+            const inputs = box.querySelectorAll('input');
+            const data = {
+                type: inputs[0].value,
+                group: inputs[1].value,
+                name: inputs[2].value
+            };
+
+            result.push(data);
+        });
+
+        // 결과를 출력
+        displayList(result);
+
+        return result;
+    }
+
+    function createInputBoxes(data) {
+        const container = document.getElementById('container');
+        container.innerHTML = ''; // 컨테이너를 초기화
+        
+        data.forEach(item => {
+            // 새로운 div 요소를 생성하고 class를 부여
+            const div = document.createElement('div');
+            div.classList.add('input_box');
+
+            // 'type' 필드
+            const inputType = document.createElement('input');
+            inputType.type = 'text';
+            inputType.name = 'a';
+            inputType.value = item.type;
+            div.appendChild(inputType);
+
+            // 'group' 필드
+            const inputGroup = document.createElement('input');
+            inputGroup.type = 'text';
+            inputGroup.name = 'b';
+            inputGroup.value = item.group;
+            div.appendChild(inputGroup);
+
+            // 'name' 필드
+            const inputName = document.createElement('input');
+            inputName.type = 'text';
+            inputName.name = 'c';
+            inputName.value = item.name;
+            div.appendChild(inputName);
+
+            // 만들어진 div를 컨테이너에 추가
+            container.appendChild(div);
+        });
+    }
+
+    function makeInput(boolean) {
+        const container = document.getElementById('container');
+        const inputBoxes = document.querySelectorAll('.input_box');
+        const leng = inputBoxes.length;
+
+        if(boolean) {
+            const item = inputBoxes[inputBoxes.length - 1].cloneNode(true)
+            container.append(item)
+            spanEl.innerText = parseInt(spanEl.innerText) + 1
+        }
+        else if (!boolean && leng > 1) {
+            inputBoxes[inputBoxes.length - 1].remove()
+            spanEl.innerText = parseInt(spanEl.innerText) - 1
+        }
+
+        collectInputBoxes()
+    }
+
+    function save() {
+        const list = collectInputBoxes();
+        if(list[0][0] == undefined) return;
+
+        setItem(saveType + 'List', list);
+    }
+
+    function changeGusetAndGift() {
+        if(saveType === 'guest') {
+            saveType = 'gift';
+            atag.innerText = saveType;
+        }
+        else {
+            saveType = 'guest';
+            atag.innerText = saveType;
+        }
+    }
+</script>
 </html>

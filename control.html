@@ -239,10 +239,7 @@
     }
 
     function save() {
-        const list = collectInputBoxes();
-        if(list[0][0] == undefined) return;
-
-        setItem(saveType + 'List', list);
+        setItem('guestList', collectInputBoxes());
     }
 
     function changeGusetAndGift() {

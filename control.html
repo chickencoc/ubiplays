@@ -121,7 +121,7 @@
     function parseCSV(text) {
         const rows = text.split('\r\n').filter(val => val != '');
         const result = rows.map(row => {
-            const list = row.split('	');
+            const list = row.split(',');
             return {
                 type: list[0],
                 group: list[1],
@@ -146,6 +146,11 @@
     }
 
     function displayList(value) {
+        if(value == undefined) {
+            output.textContent = "";
+            return;
+        }
+
         const output = document.getElementById('output');
         output.textContent = JSON.stringify(value).replaceAll('},', '},\n');
     }
@@ -153,11 +158,16 @@
     // localStorage의 사람, 선물 목록 표시
     function displayStorage(key) {
         typeEl.innerText = key + 'List';
-        const list = getItem(typeEl.innerText);
+        let list = getItem(typeEl.innerText);
+
+        if(list == undefined) {
+            list = [{type: "", group: "", name: ""}];
+        }
+
         displayList(list);
         spanEl.innerText = list.length;
         createInputBoxes(list);
-
+        
         // saveType
         atag.style.display = 'none';
         saveBtn.innerText = key + ' save';

@@ -97,7 +97,7 @@ button:active {
 }
 
 /* Positioning the faces */
-#drawInBox #cube .mid {border: none; width: var(--long-axis) - 1px;}
+#drawInBox #cube .mid {border: none;}
 #drawInBox #cube .front  { transform: translateZ(var(--cube-face-transform-1)); }
 #drawInBox #cube .back   { transform: rotateY(180deg) translateZ(var(--cube-face-transform-1)); }
 #drawInBox #cube .left   { transform: rotateY(-90deg) translateZ(var(--cube-face-transform-1)); }
@@ -117,7 +117,7 @@ button:active {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #6A5ACD;
+    background-color: #fbc560;
 }
 #drawInBox #cube #ball-txt {display: none;}
 
